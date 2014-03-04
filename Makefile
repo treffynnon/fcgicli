@@ -1,6 +1,6 @@
 PROGRAM = fcgicli
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall -O2
 SRCS = main.cpp fcgi_client.cpp
 
 all:
