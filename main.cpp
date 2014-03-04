@@ -31,7 +31,7 @@ using namespace fcgi;
  * @return int
  */
 int main(int argc, char **argv) {
-    client fcgcli("/var/run/php5-fpm.sock");
+    client fcgcli(argv[1]);
 
     string response, contents("values");
     stringstream conlength;
@@ -40,14 +40,12 @@ int main(int argc, char **argv) {
     getcwd(dir, sizeof(dir));
 
     fcgcli.params["GATEWAY_INTERFACE"] = "FastCGI/1.0";
-    fcgcli.params["REQUEST_METHOD"]    = "PUT";
-    fcgcli.params["SCRIPT_FILENAME"]   = dir;
-    fcgcli.params["SCRIPT_FILENAME"].append("/sample.php");
-    fcgcli.params["SERVER_SOFTWARE"]   = "cpp/fcgi_client";
-    fcgcli.params["SERVER_PROTOCOL"]   = "HTTP/1.1";
-    fcgcli.params["CONTENT_TYPE"]      = "application/x-www-form-urlencoded";
-
-    fcgcli.params["Original-Key"] = "originkey";
+    fcgcli.params["REQUEST_METHOD"]    = "GET";
+    fcgcli.params["SCRIPT_FILENAME"]   = argv[2];
+    fcgcli.params["CONTENT_TYPE"]      = "";
+    fcgcli.params["CONTENT_LENGTH"]    = "0";
+    fcgcli.params["QUERY_STRING"]      = "seed=";
+    fcgcli.params["QUERY_STRING"].append(argv[3]);
 
     try {
         response = fcgcli.request(&contents);
